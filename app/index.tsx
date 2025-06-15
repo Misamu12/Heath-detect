@@ -11,10 +11,11 @@ export default function Index() {
       }}
     >
       <Text style={{ color : 'blue' , fontSize : 20}}>Page de redirectionement</Text>
-      <Link rel="stylesheet" href="/dianostic" >sans lieux</Link>
+      <Link rel="stylelsheet" href="/dianostic" >sans lieux</Link>
       <Link href={"/home"} >Acceuil</Link>
-      ,
       <Link rel="stylesheet" href="/ressource" >ressource</Link>
+      <Link href={'/login'} >Login</Link>
+      
     </View>
   );
 }
