@@ -1,10 +1,8 @@
- import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-
-const IconImage = require('@/assets/images/icon.png')
 
 export default function LoginScreen() {
   
@@ -12,7 +10,7 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: require('../assets/images/icon.png') }}
+        source={ require('../assets/images/icon.png')}
         style={styles.logo}
       />
       <Text style={styles.title}>Connexion</Text>

@@ -111,7 +111,7 @@ export default function App() {
           {item.description}
         </Text>
         <View style={styles.resourcesContainer}>
-          <Text style={styles.resourcesText}>
+          <Text style={styles.resourcesText}> 
             {item.resources} ressources
           </Text>
           {item.categories.includes('Vidéo') && (
