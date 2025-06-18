@@ -17,15 +17,14 @@ export default function RootLayout() {
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             </Stack.Protected>
 
-            <Stack.Protected guard={!isLoggetIn}> 
-                <Stack.Screen name='sign-in' />
+            <Stack.Protected guard={isLoggetIn}>  
+                <Stack.Screen name='sign-in'  />
+                <Stack.Screen name="modal" options={{ presentation : "modal" }} />
             </Stack.Protected>
 
-            <Stack.Protected guard={HaveCreateAccount} >
+            <Stack.Protected guard={!HaveCreateAccount} >
                 <Stack.Screen name='create-account' />
             </Stack.Protected>
-
-            <Stack.Screen name='modal' options={{ presentation : "modal" }} />
 
         </Stack>
     </React.Fragment>
