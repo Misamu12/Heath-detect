@@ -1,40 +1,33 @@
-import { Stack } from "expo-router";
+import { HeaderShownContext } from '@react-navigation/elements';
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+
+const isLoggetIn = false;
+const HaveCreateAccount = false;
+
 
 export default function RootLayout() {
   return (
-   <Stack>
-      <Stack.Screen name="index" options={{ 
-        title: ' ', 
-        headerTintColor : "blue" }} />
+    <React.Fragment>
+        <StatusBar style='auto' />
+        <Stack>
 
+            <Stack.Protected guard={isLoggetIn}>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack.Protected>
 
+            <Stack.Protected guard={!isLoggetIn}> 
+                <Stack.Screen name='sign-in' />
+            </Stack.Protected>
 
-      <Stack.Screen name="connexion" options={{ 
-        title: 'connexion' , 
-        headerTintColor : "blue"}} />
+            <Stack.Protected guard={HaveCreateAccount} >
+                <Stack.Screen name='create-account' />
+            </Stack.Protected>
 
+            <Stack.Screen name='modal' options={{ presentation : "modal" }} />
 
-
-      <Stack.Screen name="login" options={{ 
-        title: 'login', 
-        headerTintColor : "blue" }} />
-
-
-
-      <Stack.Screen name="ressource" options={{ 
-        title: 'ressource', 
-        headerTintColor : "blue" }} />
-
-
-      <Stack.Screen name="home" options={{ 
-         title: 'home',
-         headerTintColor : "blue" }} />
-         
-
-      <Stack.Screen name="dianostic" options={{ 
-        title: 'dianostic' , 
-        headerTintColor : "blue"}} />
-
-    </Stack>
-);
+        </Stack>
+    </React.Fragment>
+  );
 }

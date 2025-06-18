@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 
 export default function Index() {
   return (
@@ -15,6 +15,9 @@ export default function Index() {
       <Link href={"/home"} >Acceuil</Link>
       <Link rel="stylesheet" href="/ressource" >ressource</Link>
       <Link href={'/login'} >Login</Link>
+      <Link asChild push href="/modal"  >
+        <Button title='MODAL' />
+      </Link>
       
     </View>
   );

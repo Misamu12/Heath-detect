@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert, Button } from 'react-native';
 import { Link } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-export default function LoginScreen() {
-  
-
-  return (
+export default function signInScreen() {
+    
+    
+    return (
     <View style={styles.container}>
-      <Image
-        source={ require('../assets/images/icon.png')}
-        style={styles.logo}
-      />
-      <Text style={styles.title}>Connexion</Text>
-      <Text style={styles.subtitle}>Bienvenue dans votre espace éducatif</Text>
+        <Image
+            source={ require('../assets/images/icon.png')}
+            style={styles.logo}
+        />
+
+      <Text style={styles.title}>Hearth-Detect</Text>
 
       <View style={styles.inputContainer}>
         <MaterialIcons name="email" size={24} color="#666" style={styles.icon} />
@@ -43,9 +43,9 @@ export default function LoginScreen() {
         <Text style={styles.forgotPasswordText}>Mot de passe oublié?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginButton} >
-        <Text style={styles.loginButtonText}>Se connecter</Text>
-      </TouchableOpacity>
+        <Link asChild push href="/modal"  >
+           <Button title='connexion' />
+        </Link>
 
       <TouchableOpacity 
         style={styles.registerButton}>
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
     justifyContent: 'center',
+    alignItems : "center"
   },
   logo: {
     width: 120,
