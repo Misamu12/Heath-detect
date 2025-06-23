@@ -44,7 +44,9 @@ export default function signInScreen() {
       </TouchableOpacity>
 
         <Link asChild push href="/modal"  >
-           <Button title='connexion' />
+           <Button title='connexion' onPress={()=>{
+            Alert.prompt("Met la donnee : ");
+           }} />
         </Link>
 
       <TouchableOpacity 

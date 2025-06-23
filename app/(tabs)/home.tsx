@@ -64,7 +64,8 @@ export default function HomeScreen() {
           <View style={styles.card}>
             <FontAwesome5 name="info-circle" size={20} color="#666" />
             <Text style={styles.cardText}>
-              Cette application ne remplace pas une consultation médicale. En cas d'urgence, contactez immédiatement les services d'urgence.
+              Cette application ne remplace pas une consultation médicale. En cas d'urgence, contactez immédiatement les services d'urgence,
+              Si vous vous etes enregistre du genre feminin , vos dianostic prendras aussi compte de ca !!!
             </Text>
           </View>
         </View>

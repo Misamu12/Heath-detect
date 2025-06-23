@@ -13,17 +13,17 @@ export default function RootLayout() {
         <StatusBar style='auto' />
         <Stack>
 
-            <Stack.Protected guard={isLoggetIn}>
+            <Stack.Protected guard={!isLoggetIn}>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             </Stack.Protected>
 
-            <Stack.Protected guard={isLoggetIn}>  
-                <Stack.Screen name='sign-in'  />
+            <Stack.Protected guard={!isLoggetIn}>  
+                <Stack.Screen name='sign-in' options={{ title : "" , headerShown : false}}  />
                 <Stack.Screen name="modal" options={{ presentation : "modal" }} />
             </Stack.Protected>
-
-            <Stack.Protected guard={!HaveCreateAccount} >
-                <Stack.Screen name='create-account' />
+ 
+            <Stack.Protected guard={HaveCreateAccount} >
+                <Stack.Screen name='create-account' options={{ headerShown: false }} />
             </Stack.Protected>
 
         </Stack>

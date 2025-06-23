@@ -10,22 +10,10 @@ export default function RootLayout() {
          headerShown : false }} />
 
 
-
-      <Stack.Screen name="connexion" options={{ 
-        title: 'connexion' , 
-        headerTintColor : "blue"}} />
-
-
-
-      <Stack.Screen name="login" options={{ 
-        title: 'login', 
-        headerTintColor : "blue" }} />
-
-
-
       <Stack.Screen name="ressource" options={{ 
-        title: 'ressource', 
-        headerTintColor : "blue" }} />
+        title: ' ',
+        headerTintColor : "blue" ,
+        headerShown : true }} />
 
 
       <Stack.Screen name="home" options={{ 
@@ -36,6 +24,8 @@ export default function RootLayout() {
       <Stack.Screen name="dianostic" options={{ 
         title: 'dianostic' , 
         headerTintColor : "blue"}} />
+
+        {/** Ajouter une page resultat  */}
 
     </Stack>
 );

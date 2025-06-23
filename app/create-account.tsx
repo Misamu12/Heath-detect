@@ -45,8 +45,8 @@ export default function App() {
 
   // Options pour le sexe
   const genderOptions = [
-    { id: 'male', label: 'Homme' },
-    { id: 'female', label: 'Femme' }
+    { id: 'male', label: 'Masculin' },
+    { id: 'female', label: 'Feminin' }
   ];
 
   // Fonction de validation du formulaire
@@ -128,6 +128,19 @@ export default function App() {
     }
   };
 
+
+  const show = () =>{
+    console.log(lastName);
+    console.log(firstName);
+    console.log(email);
+    console.log(gender);
+  }
+  
+  
+  
+
+
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -142,20 +155,20 @@ export default function App() {
             contentContainerStyle={styles.scrollContentContainer}
             showsVerticalScrollIndicator={false}
           >
+
+            <View style={styles.profileImageContainer}>
+              <Image 
+                source={ require('../assets/images/icon.png')} 
+                style={styles.profileImage} 
+              />
+            </View>
+            
             {/* En-tête */}
             <View style={styles.header}>
               <Text style={styles.headerTitle}>Créer un compte</Text>
               <Text style={styles.headerSubtitle}>
                 Veuillez remplir les informations ci-dessous pour vous inscrire
               </Text>
-            </View>
-
-            {/* Image de profil */}
-            <View style={styles.profileImageContainer}>
-              <Image 
-                source={{ uri: 'https://api.a0.dev/assets/image?text=Profil&aspect=1:1&seed=123' }} 
-                style={styles.profileImage} 
-              />
             </View>
 
             {/* Formulaire d'inscription */}
@@ -193,6 +206,7 @@ export default function App() {
                     placeholder="Entrez votre nom"
                     value={lastName}
                     onChangeText={setLastName}
+                    
                   />
                 </View>
                 {errors.lastName ? (
@@ -224,7 +238,7 @@ export default function App() {
 
               {/* Sexe */}
               <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>Sexe</Text>
+                <Text style={styles.inputLabel}>Genre</Text>
                 <View style={styles.genderContainer}>
                   {genderOptions.map((option) => (
                     <TouchableOpacity
@@ -338,7 +352,9 @@ export default function App() {
               {/* Bouton d'inscription */}
               <TouchableOpacity
                 style={styles.submitButton}
-                onPress={handleSubmit}
+                onPress={() => {
+                    Alert.alert(firstName + "\n" + lastName + "\n" + email + "\n" + gender + "\n" + password )
+                }}
               >
                 <Text style={styles.submitButtonText}>S'inscrire</Text>
               </TouchableOpacity>
@@ -347,7 +363,7 @@ export default function App() {
               <View style={styles.loginLinkContainer}>
                 <Text style={styles.loginText}>
                   Vous avez déjà un compte ?{' '}
-                  <Text style={styles.loginLink}>Se connecter</Text>
+                  <Text  style={styles.loginLink}>Se connecter</Text>
                 </Text>
               </View>
             </View>
