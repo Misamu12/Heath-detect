@@ -1,28 +1,45 @@
+import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { StyleSheet , Text , View , ScrollView , Image , TouchableOpacity , TextInput , StatusBar , FlatList , Dimensions } from 'react-native';
+import { Dimensions, FlatList, Image, Linking, Modal, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons, Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
-const cardWidth = width / 2 - 24; // For 2 columns with padding
+const cardWidth = width / 2 - 24; // pour deux colonnes avec un espacement
 
-// Données des maladies avec leurs ressources
+// Exemple de données enrichies pour une maladie
+
 const diseasesData = [
   {
     id: '1',
     name: 'Diabète',
-    description: 'Maladie chronique caractérisée par un excès de sucre dans le sang',
+    description: 'Maladie chronique caractérisée par un excès de sucre dans le sang.',
     image: 'https://api.a0.dev/assets/image?text=Diabète&aspect=1:1&seed=123',
     categories: ['Vidéo', 'Documentation', 'Conseils'],
-    resources: 8
+    resources: 8,
+    symptomes: ['Soif excessive', 'Mictions fréquentes', 'Fatigue', 'Perte de poids'],
+    premiers_soins: ['Contrôle glycémique', 'Alimentation équilibrée', 'Consultation médicale'],
+    exercices: ['Marche régulière', 'Natation', 'Cyclisme'],
+    sources: [
+      { label: 'Fédération Française des Diabétiques', url: 'https://www.federationdesdiabetiques.org/' },
+      { label: 'OMS - Diabète', url: 'https://www.who.int/fr/news-room/fact-sheets/detail/diabetes' },
+      { label: 'VIDÉO : Diabète expliqué', url: 'https://www.youtube.com/watch?v=7Q7L673i8hY' }
+    ]
   },
   {
     id: '2',
     name: 'Hypertension',
-    description: 'Tension artérielle anormalement élevée dans les artères',
+    description: 'Tension artérielle anormalement élevée dans les artères.',
     image: 'https://api.a0.dev/assets/image?text=Hypertension&aspect=1:1&seed=456',
     categories: ['Documentation', 'Articles'],
-    resources: 5
+    resources: 5,
+    symptomes: ['Maux de tête', 'Vertiges', 'Fatigue', 'Saignements de nez'],
+    premiers_soins: ['Contrôle tensionnel', 'Réduction du sel', 'Activité physique'],
+    exercices: ['Marche', 'Yoga', 'Respiration profonde'],
+    sources: [
+      { label: 'Ameli - Hypertension artérielle', url: 'https://www.ameli.fr/assure/sante/themes/hypertension-arterielle/definition-causes' },
+      { label: 'OMS - Hypertension', url: 'https://www.who.int/fr/news-room/fact-sheets/detail/hypertension' },
+      { label: 'VIDÉO : Hypertension expliquée', url: 'https://www.youtube.com/watch?v=QwQw1Jk1r7g' }
+    ]
   },
   {
     id: '3',
@@ -74,36 +91,29 @@ const diseasesData = [
   }
 ];
 
-// Catégories disponibles pour le filtre
 const categories = [
-  { id: 'all', name: 'Tous', icon: 'apps' },
-  { id: 'video', name: 'Vidéos', icon: 'videocam' },
-  { id: 'docs', name: 'Documentation', icon: 'description' },
-  { id: 'testimonials', name: 'Témoignages', icon: 'people' },
-  { id: 'exercises', name: 'Exercices', icon: 'fitness-center' }
+  { id: 'all', name: 'Maladies recents en kinshasa', icon: 'apps' },
 ];
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  
-  // Fonction pour filtrer les maladies selon la recherche et la catégorie
+  const [selectedDisease, setSelectedDisease] = useState(null);
+
   const getFilteredDiseases = () => {
     return diseasesData.filter(disease => {
-      const matchesSearch = disease.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                           disease.description.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesCategory = selectedCategory === 'all' || 
-                             disease.categories.some(category => 
-                               category.toLowerCase().includes(selectedCategory.toLowerCase()));
-      
+      const matchesSearch = disease.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        disease.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = selectedCategory === 'all' ||
+        disease.categories.some(category =>
+          category.toLowerCase().includes(selectedCategory.toLowerCase()));
       return matchesSearch && matchesCategory;
     });
   };
 
   // Rendu d'une card de maladie
   const renderDiseaseCard = ({ item }) => (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={() => setSelectedDisease(item)}>
       <Image source={{ uri: item.image }} style={styles.cardImage} />
       <View style={styles.cardContent}>
         <Text style={styles.cardTitle}>{item.name}</Text>
@@ -111,7 +121,7 @@ export default function App() {
           {item.description}
         </Text>
         <View style={styles.resourcesContainer}>
-          <Text style={styles.resourcesText}> 
+          <Text style={styles.resourcesText}>
             {item.resources} ressources
           </Text>
           {item.categories.includes('Vidéo') && (
@@ -131,19 +141,19 @@ export default function App() {
 
   // Rendu d'une catégorie
   const renderCategoryItem = ({ item }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={[
-        styles.categoryItem, 
+        styles.categoryItem,
         selectedCategory === item.id && styles.categoryItemSelected
       ]}
       onPress={() => setSelectedCategory(item.id)}
     >
-      <MaterialIcons 
-        name={item.icon} 
-        size={20} 
-        color={selectedCategory === item.id ? '#FFFFFF' : '#4A5568'} 
+      <MaterialIcons
+        name={item.icon}
+        size={20}
+        color={selectedCategory === item.id ? '#FFFFFF' : '#4A5568'}
       />
-      <Text 
+      <Text
         style={[
           styles.categoryText,
           selectedCategory === item.id && styles.categoryTextSelected
@@ -160,7 +170,7 @@ export default function App() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="#F7FAFC" />
-        
+
         {/* Header */}
         <View style={styles.header}>
           <View>
@@ -173,7 +183,7 @@ export default function App() {
             <FontAwesome5 name="user-md" size={22} color="#4299E1" />
           </View>
         </View>
-        
+
         {/* Barre de recherche */}
         <View style={styles.searchContainer}>
           <Ionicons name="search" size={20} color="#A0AEC0" style={styles.searchIcon} />
@@ -189,7 +199,7 @@ export default function App() {
             </TouchableOpacity>
           )}
         </View>
-        
+
         {/* Catégories */}
         <View style={styles.categoriesSection}>
           <Text style={styles.sectionTitle}>Catégories</Text>
@@ -202,14 +212,14 @@ export default function App() {
             style={styles.categoriesList}
           />
         </View>
-        
+
         {/* Liste des maladies */}
         <View style={styles.diseasesSection}>
           <Text style={styles.sectionTitle}>
-            Ressources disponibles 
+            Ressources disponibles
             <Text style={styles.itemCount}> ({filteredDiseases.length})</Text>
           </Text>
-          
+
           {filteredDiseases.length > 0 ? (
             <FlatList
               data={filteredDiseases}
@@ -228,6 +238,67 @@ export default function App() {
             </View>
           )}
         </View>
+
+        {/* Modal d'information sur la maladie */}
+        <Modal
+          visible={!!selectedDisease}
+          animationType="slide"
+          transparent
+          onRequestClose={() => setSelectedDisease(null)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              {selectedDisease && (
+                <ScrollView>
+                  <Image source={{ uri: selectedDisease.image }} style={styles.modalImage} />
+                  <Text style={styles.modalTitle}>{selectedDisease.name}</Text>
+                  <Text style={styles.modalDesc}>{selectedDisease.description}</Text>
+                  {selectedDisease.symptomes && (
+                    <>
+                      <Text style={styles.modalSection}>Symptômes :</Text>
+                      {selectedDisease.symptomes.map((s, i) => (
+                        <Text key={i} style={styles.modalText}>• {s}</Text>
+                      ))}
+                    </>
+                  )}
+                  {selectedDisease.premiers_soins && (
+                    <>
+                      <Text style={styles.modalSection}>Premiers soins :</Text>
+                      {selectedDisease.premiers_soins.map((s, i) => (
+                        <Text key={i} style={styles.modalText}>• {s}</Text>
+                      ))}
+                    </>
+                  )}
+                  {selectedDisease.exercices && (
+                    <>
+                      <Text style={styles.modalSection}>Exercices :</Text>
+                      {selectedDisease.exercices.map((s, i) => (
+                        <Text key={i} style={styles.modalText}>• {s}</Text>
+                      ))}
+                    </>
+                  )}
+                  {selectedDisease.sources && (
+                    <>
+                      <Text style={styles.modalSection}>Sources :</Text>
+                      {selectedDisease.sources.map((src, i) => (
+                        <Text
+                          key={i}
+                          style={[styles.modalText, { color: '#2563eb', textDecorationLine: 'underline' }]}
+                          onPress={() => Linking.openURL(src.url)}
+                        >
+                          {src.label}
+                        </Text>
+                      ))}
+                    </>
+                  )}
+                  <TouchableOpacity style={styles.closeBtn} onPress={() => setSelectedDisease(null)}>
+                    <Text style={styles.closeBtnText}>Fermer</Text>
+                  </TouchableOpacity>
+                </ScrollView>
+              )}
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -397,5 +468,63 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 12,
     maxWidth: '80%',
-  }
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(44,44,44,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 24,
+    width: '90%',
+    maxHeight: '85%',
+    elevation: 6,
+  },
+  modalImage: {
+    width: '100%',
+    height: 120,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#2563eb',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  modalDesc: {
+    fontSize: 14,
+    color: '#2D3748',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  modalSection: {
+    fontWeight: 'bold',
+    marginTop: 12,
+    marginBottom: 4,
+    color: '#4299E1',
+    fontSize: 15,
+  },
+  modalText: {
+    fontSize: 14,
+    color: '#2D3748',
+    marginBottom: 2,
+  },
+  closeBtn: {
+    marginTop: 18,
+    alignSelf: 'center',
+    backgroundColor: '#2563eb',
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  closeBtnText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
 });

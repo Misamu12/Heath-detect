@@ -1,32 +1,27 @@
-import { HeaderShownContext } from '@react-navigation/elements';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { AuthProvider, useAuth } from './auth-context';
 
-const isLoggetIn = false;
-const HaveCreateAccount = false;
+function LayoutStack() {
+  const { isLoggedIn } = useAuth();
 
+  return (
+    <>
+      <StatusBar style='auto' />
+      <Stack>
+        <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+        <Stack.Screen name="create-account" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </>
+  );
+}
 
 export default function RootLayout() {
   return (
-    <React.Fragment>
-        <StatusBar style='auto' />
-        <Stack>
-
-            <Stack.Protected guard={!isLoggetIn}>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            </Stack.Protected>
-
-            <Stack.Protected guard={!isLoggetIn}>  
-                <Stack.Screen name='sign-in' options={{ title : "" , headerShown : false}}  />
-                <Stack.Screen name="modal" options={{ presentation : "modal" }} />
-            </Stack.Protected>
- 
-            <Stack.Protected guard={HaveCreateAccount} >
-                <Stack.Screen name='create-account' options={{ headerShown: false }} />
-            </Stack.Protected>
-
-        </Stack>
-    </React.Fragment>
+    <AuthProvider>
+      <LayoutStack />
+    </AuthProvider>
   );
 }

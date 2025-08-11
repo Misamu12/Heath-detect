@@ -1,20 +1,22 @@
+import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  StatusBar,
+  Alert,
+  Dimensions,
+  Image,
   KeyboardAvoidingView,
   Platform,
-  Image,
-  Alert,
-  Dimensions
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useAuth } from './auth-context';
 
 const { width } = Dimensions.get('window');
 
@@ -120,14 +122,12 @@ export default function App() {
   // Fonction de soumission du formulaire
   const handleSubmit = () => {
     if (validateForm()) {
-      Alert.alert(
-        'Inscription réussie',
-        `Bienvenue ${firstName} ${lastName}! Votre compte a été créé avec succès.`,
-        [{ text: 'OK' }]
-      );
+      // Soumettre le formulaire 
     }
   };
 
+  const router = useRouter();
+  const { setIsLoggedIn } = useAuth();
 
   const show = () =>{
     console.log(lastName);
@@ -136,11 +136,6 @@ export default function App() {
     console.log(gender);
   }
   
-  
-  
-
-
-
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -352,20 +347,23 @@ export default function App() {
               {/* Bouton d'inscription */}
               <TouchableOpacity
                 style={styles.submitButton}
-                onPress={() => {
-                    Alert.alert(firstName + "\n" + lastName + "\n" + email + "\n" + gender + "\n" + password )
-                }}
+                onPress={handleSubmit}
               >
                 <Text style={styles.submitButtonText}>S'inscrire</Text>
               </TouchableOpacity>
 
               {/* Lien vers la connexion */}
-              <View style={styles.loginLinkContainer}>
+              <TouchableOpacity style={styles.loginLinkContainer} onPress={() => router.push('/sign-in')}>
                 <Text style={styles.loginText}>
                   Vous avez déjà un compte ?{' '}
-                  <Text  style={styles.loginLink}>Se connecter</Text>
+                  <Text
+                    style={styles.loginLink}
+                    
+                  >
+                    Se connecter
+                  </Text>
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
