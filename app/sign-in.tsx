@@ -1,8 +1,9 @@
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons'; // commenter
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useAuth } from './auth-context';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 export default function signInScreen() {
   const router = useRouter();
@@ -10,16 +11,35 @@ export default function signInScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const isFormValid = email.trim() !== '' && password.trim() !== '';
+  const isFormValid = email.trim() !== '' && email.includes('@') && email.split('@')[1].includes('.') && email.split('@')[0].length > 0 && password.trim() !== '' && password.length >= 6;
 
   const handleLogin = () => {
     if (!isFormValid) {
       Alert.alert('Erreur', 'Veuillez remplir tous les champs.');
       return;
     }
-    // Ajoute ici ta logique de vérification
     setIsLoggedIn(true);
     router.replace('/(tabs)');
+  };
+
+  // Authentification biométrique
+  const handleBiometricAuth = async () => {
+    const hasHardware = await LocalAuthentication.hasHardwareAsync();
+    const supported = await LocalAuthentication.isEnrolledAsync();
+    if (!hasHardware || !supported) {
+      Alert.alert('Biométrie non disponible', 'Aucune donnée biométrique enregistrée sur cet appareil.');
+      return;
+    }
+    const result = await LocalAuthentication.authenticateAsync({
+      promptMessage: 'Authentifiez-vous',
+      fallbackLabel: 'Utiliser le mot de passe',
+    });
+    if (result.success) {
+      setIsLoggedIn(true);
+      router.replace('/(tabs)');
+    } else {
+      Alert.alert('Échec', 'Authentification biométrique refusée.');
+    }
   };
 
   return (
@@ -67,6 +87,12 @@ export default function signInScreen() {
         activeOpacity={isFormValid ? 0.7 : 1}
       >
         <Text style={styles.loginButtonText}>Se connecter</Text>
+      </TouchableOpacity>
+
+      {/* Bouton biométrique */}
+      <TouchableOpacity style={styles.biometricButton} onPress={handleBiometricAuth}>
+        <MaterialIcons name="fingerprint" size={28} color="#2563eb" />
+        <Text style={styles.biometricText}>Connexion biométrique</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.registerButton} onPress={() => router.push('/create-account')}>
@@ -165,5 +191,22 @@ const styles = StyleSheet.create({
     color: '#2563eb',
     fontWeight: 'bold',
     fontSize: 15,
+  },
+  biometricButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#EFF6FF',
+    borderRadius: 12,
+    paddingVertical: 12,
+    width: 320,
+    marginBottom: 10,
+    marginTop: 2,
+  },
+  biometricText: {
+    color: '#2563eb',
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginLeft: 8,
   },
 });

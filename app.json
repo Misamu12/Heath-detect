@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "Heath-detect",
-    "slug": "Heath-dhttps://github.com/Misamu12/etect",
+    "name": "HealthDetect",
+    "slug": "healthdetect",
+    "owner": "patx",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "heathdetect",
+    "scheme": "healthdetect",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -16,7 +17,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.patx.healthdetect"
     },
     "web": {
       "bundler": "metro",
@@ -38,6 +40,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "89523132-1eb0-4085-97f3-986f8a3173f1"
+      }
     }
   }
 }
