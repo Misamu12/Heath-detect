@@ -11,7 +11,7 @@ export default function signInScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const isFormValid = email.trim() !== '' && email.includes('@') && email.split('@')[1].includes('.') && email.split('@')[0].length > 0 && password.trim() !== '' && password.length >= 6;
+  const isFormValid = email.trim() !== ''  && email.includes('@') && email.split('@')[1].includes('.') && email.split('@')[0].length > 0 && password.trim() !== '' && password.length >= 6;
 
   const handleLogin = () => {
     if (!isFormValid) {
