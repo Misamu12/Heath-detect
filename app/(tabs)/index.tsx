@@ -9,7 +9,7 @@ export default function HomeScreen() {
 
   // Fonction de déconnexion (à adapter selon votre logique)
   const handleLogout = () => {
-    // Ajoutez ici la logique de déconnexion (clear token, etc.)
+    // Ajoutez ici la logique de déconnexion (clear token, etc...)
     router.replace('/sign-in');
   };
 
