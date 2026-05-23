@@ -81,6 +81,8 @@ Les contributions sont les bienvenues !
 * Système de notifications pour le suivi santé
 * Intégration d’API médicales pour des conseils plus précis
 * Interface design améliorée et thèmes sombres/clairs
+* Une intelligence artificielle pour automatiser l'analyse 
+* Les astuces pour comprendre ces douleurs pour être plus précis 
 
 ---
 
@@ -122,5 +124,7 @@ When you're ready, run:
 ```bash
 npm run reset-project
 ```
+
+
 
 # PROJET L3 LMD FASI ( Fait par RODAIN PATRICK MISAMU MBAKATA )
